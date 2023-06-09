@@ -34,6 +34,10 @@ const baseInput = styled.input`
 // Forma de herança
 export const TaskInput = styled(baseInput)`
   flex: 1;
+  /* Removendo a seta de opção */
+  &::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
 `
 
 export const MinutesAmountInput = styled(baseInput)`
