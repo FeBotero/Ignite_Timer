@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { History } from './pages/History'
 import { DefaultLayout } from './layouts/DefaultLayout'
-import { UserLayout } from './layouts/UserLaytou'
+import { UserLayout } from './layouts/UserLayout'
 import { HomeUser } from './pages/HomeUser'
 
 export function Router() {

@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { HeaderUser } from '../components/HeaderUser'
+import { HeaderUser } from '../../components/HeaderUser'
 
 export function UserLayout() {
   return (
