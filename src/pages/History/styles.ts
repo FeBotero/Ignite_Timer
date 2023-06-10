@@ -56,3 +56,28 @@ export const HistoryList = styled.div`
     }
   }
 `
+const STATUS_COLORS = {
+  yellow: 'yellow-500',
+  green: 'green-500',
+  red: 'red-500',
+} as const
+// as const diz que essa varaivel é sempre constante e que essas cores estão dentro do thema
+
+interface StatusProps {
+  // as chaves do objeto StatusColor
+  statusColor: keyof typeof STATUS_COLORS
+}
+
+export const Status = styled.span<StatusProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    background: ${(props) => props.theme[STATUS_COLORS[props.statusColor]]};
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+`
