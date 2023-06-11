@@ -48,12 +48,17 @@ export function Home() {
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   useEffect(() => {
+    let interval: number
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(
           differenceInSeconds(new Date(), activeCycle.startDate),
         )
       }, 1000)
+    }
+
+    return () => {
+      clearInterval(interval)
     }
   }, [activeCycle])
 
@@ -70,6 +75,8 @@ export function Home() {
     setCycles((state) => [...state, newCycle])
     // Diz qual ciclo está ativo
     setActiveCycleId(id)
+    // zera o tempo que foi passado
+    setAmountSecondsPassed(0)
 
     reset()
   }
@@ -81,7 +88,13 @@ export function Home() {
   const secondAmount = currentSeconds % 60
 
   const minutes = String(minutesAmount).padStart(2, '0')
-  const second = String(secondAmount).padStart(2, '0')
+  const seconds = String(secondAmount).padStart(2, '0')
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${activeCycle.task} - ${minutes}:${seconds}`
+    }
+  }, [minutes, seconds, activeCycle])
 
   const task = watch('task')
   const minutesAmounts = watch('minutesAmount')
@@ -121,8 +134,8 @@ export function Home() {
           <span>{minutes[0]}</span>
           <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>{second[0]}</span>
-          <span>{second[1]}</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountDownContainer>
         <StartCountDownButton type="submit" disabled={isSubmitDisabled}>
           <Play size={24} />
