@@ -77,7 +77,7 @@ export const Separator = styled.div`
   display: flex;
   justify-content: center;
 `
-export const StartCountDownButton = styled.button`
+export const BaseCountDownButton = styled.button`
   display: flex;
   width: 100%;
   align-items: center;
@@ -87,16 +87,26 @@ export const StartCountDownButton = styled.button`
   gap: 0.5rem;
   font-weight: bold;
   border-radius: 8px;
-  background: ${(props) => props.theme['green-500']};
+
   color: ${(props) => props.theme['gray-100']};
   cursor: pointer;
-
-  &:not(:disabled)hover {
-    background: ${(props) => props.theme['green-700']};
-  }
 
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+`
+export const StartCountDownButton = styled(BaseCountDownButton)`
+  background: ${(props) => props.theme['green-500']};
+
+  &:not(:disabled)hover {
+    background: ${(props) => props.theme['green-700']};
+  }
+`
+export const StopCountDownButton = styled(BaseCountDownButton)`
+  background: ${(props) => props.theme['red-500']};
+
+  &:hover {
+    background: ${(props) => props.theme['red-700']};
   }
 `
