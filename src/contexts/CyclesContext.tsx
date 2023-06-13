@@ -69,7 +69,6 @@ export function CyclesContextProvider({
     setActiveCycleId(id)
     // zera o tempo que foi passado
     setAmountSecondsPassed(0)
-    // reset()
   }
 
   function InterruptCurrentCycle() {
