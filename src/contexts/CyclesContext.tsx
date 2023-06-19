@@ -31,7 +31,7 @@ interface CyclesContextProviderProps {
 }
 interface CyclesState {
   cycles: Cycle[]
-  acitiveCycleId: string | null
+  activeCycleId: string | null
 }
 
 export function CyclesContextProvider({
@@ -39,29 +39,42 @@ export function CyclesContextProvider({
 }: CyclesContextProviderProps) {
   const [cyclesState, dispatch] = useReducer(
     (state: CyclesState, action: any) => {
-      if (action.type === 'ADD_NEW_CYCLE') {
-        return {
-          ...state,
-          cycles: [...state.cycles, action.payload.newCycle],
-          activeCycleId: action.payload.newCycle.id,
-        }
+      switch (action.type) {
+        case 'ADD_NEW_CYCLE':
+          return {
+            ...state,
+            cycles: [...state.cycles, action.payload.newCycle],
+            activeCycleId: action.payload.newCycle.id,
+          }
+        case 'INTERRUPT_CURRENT_CYCLE':
+          return {
+            ...state,
+            cycles: state.cycles.map((cycle) => {
+              if (cycle.id === state.activeCycleId) {
+                // altera a propriedade para data que foi interropida
+                return { ...cycle, interruptedDate: new Date() }
+              } else {
+                return cycle
+              }
+            }),
+            activeCycleId: null,
+          }
+        case 'MARK_FINISHED_CYCLE':
+          return {
+            ...state,
+            cycles: state.cycles.map((cycle) => {
+              if (cycle.id === state.activeCycleId) {
+                // altera a propriedade para data que foi interropida
+                return { ...cycle, finishedDate: new Date() }
+              } else {
+                return cycle
+              }
+            }),
+            activeCycleId: null,
+          }
+        default:
+          return state
       }
-      if (action.type === 'INTERRUPT_CURRENT_CYCLE') {
-        return {
-          ...state,
-          cycles:state.cycles.map((cycle) => {
-            if (cycle.id === state.activeCycleId) {
-              // altera a propriedade para data que foi interropida
-              return { ...cycle, interruptedDate: new Date() }
-            } else {
-              return cycle
-            }
-          }),,
-          activeCycleId: null,
-        }
-      }
-
-      return state
     },
     {
       cycles: [],
@@ -82,16 +95,6 @@ export function CyclesContextProvider({
         activeCycleId,
       },
     })
-    // setCycles((state) =>
-    //   state.map((cycle) => {
-    //     if (cycle.id === activeCycleId) {
-    //       // altera a propriedade para data que foi interropida
-    //       return { ...cycle, finishedDate: new Date() }
-    //     } else {
-    //       return cycle
-    //     }
-    //   }),
-    // )
   }
 
   function setSecondPassed(seconds: number) {
@@ -115,7 +118,6 @@ export function CyclesContextProvider({
       },
     })
 
-    
     // zera o tempo que foi passado
     setAmountSecondsPassed(0)
   }
@@ -127,7 +129,6 @@ export function CyclesContextProvider({
         activeCycleId,
       },
     })
-    
   }
 
   return (
